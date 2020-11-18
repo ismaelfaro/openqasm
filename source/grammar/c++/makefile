@@ -1,6 +1,6 @@
 OUTPUT=output
 GENERATED=generated
-# runtime is where you downloaded and extracted https://www.antlr.org/download/antlr4-cpp-runtime-4.8-macos.zip
+# runtime from  https://www.antlr.org/download/
 RUNTIME=./antlr4-cpp-runtime
 CCARGS=-c -I $(RUNTIME)/antlr4-runtime/ -I $(GENERATED) -std=c++11	
 LDARGS=-g
@@ -23,7 +23,7 @@ all: parser
 
 parser: dirs antlr4 $(TYPE).cpp $(OBJS)
 	$(CC) $(CCARGS) $(TYPE).cpp  -o $(OUTPUT)/$(TYPE).o 
-	$(CC) $(LDARGS) $(OUTPUT)/$(TYPE).o $(OBJS) $(LIBS) -o $(TYPE)
+	$(CC) $(LDARGS) $(OUTPUT)/$(TYPE).o $(OBJS) $(LIBS) -o $(TYPE).exe
 
 antlr4: $(GENERATED)/.generated;
  
