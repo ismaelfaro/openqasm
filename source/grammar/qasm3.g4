@@ -5,7 +5,7 @@ program
     ;
 
 header
-    : 'OPENQASM' Number (Dot Number)? SemiColon
+    : 'OPENQASM 3' (Dot Number)? SemiColon
     ;
 
 include
@@ -19,6 +19,7 @@ statement
 
 variableDeclarationStatement
     : type variableDeclarationList
+    | Gate
     ;
 
 type
@@ -34,7 +35,8 @@ variableDeclaration
     ;
 
 gateDefinition
-    : Gate Identifier (paramsList)? qargsList '{' expression+ '}'
+    // : Gate Identifier (paramsList) qargsList '{' expression+ '}'
+    : Gate Identifier (paramsList) qargsList '{' expression '}'
     ;
 
 paramsList
@@ -69,14 +71,22 @@ varType
     : 'qubit' | 'qreg' | 'bit' | 'creg' | 'bool' | 'const' | 'int' | 'uint' | 'angle' | 'fixed'
     ;
 
-Gate
+GateDef
     : 'gate'
+    ;
+
+Gate
+    : StdGates (Identifier OpenBracket Number CloseBracket)+
+    ;
+
+StdGates
+    : 'h' | 'cnot' | 'x' | 'y' | 'z' | 't' | 'td' | 's' | 'sd' 
     ;
 
 Assign : '=';
 
 StringLiteral
-    : '"' Identifier '"'
+    : '"'Identifier'"'
     ;
 
 OpenBracket : '[';
@@ -92,7 +102,9 @@ Dot : '.';
 Comma : ',';
 
 Identifier
-    : ('a' .. 'z' | 'A' .. 'Z') ('a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_')*
+    : ('a' .. 'z' | 'A' .. 'Z') ('a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' | '.' )*
     ;
+SPACE      
+   : [ \t\r\n]+ -> skip;
 
 Number : [0-9]+;
